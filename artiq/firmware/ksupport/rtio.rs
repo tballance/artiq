@@ -18,6 +18,7 @@ mod imp {
     pub const RTIO_O_STATUS_WAIT:                      u8 = 1;
     pub const RTIO_O_STATUS_UNDERFLOW:                 u8 = 2;
     pub const RTIO_O_STATUS_DESTINATION_UNREACHABLE:   u8 = 4;
+    pub const RTIO_O_STATUS_SEQUENCE_ERROR:            u8 = 8;
     pub const RTIO_I_STATUS_WAIT_EVENT:                u8 = 1;
     pub const RTIO_I_STATUS_OVERFLOW:                  u8 = 2;
     pub const RTIO_I_STATUS_WAIT_STATUS:               u8 = 4;
@@ -71,6 +72,11 @@ mod imp {
         if status & RTIO_O_STATUS_DESTINATION_UNREACHABLE != 0 {
             raise!("RTIODestinationUnreachable",
                 "RTIO destination unreachable, output, at {0} mu, channel {1}",
+                timestamp, channel as i64, 0);
+        }
+        if status & RTIO_O_STATUS_SEQUENCE_ERROR != 0 {
+            raise!("RTIOSequenceError",
+                "RTIO sequence error has occurred, before {0} mu, channel {1}",
                 timestamp, channel as i64, 0);
         }
     }

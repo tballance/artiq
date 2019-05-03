@@ -34,8 +34,8 @@ layout = [
     ("o_data", 512, DIR_M_TO_S),
     ("o_address", 8, DIR_M_TO_S),
     # o_status bits:
-    # <0:wait> <1:underflow> <2:destination unreachable>
-    ("o_status", 3, DIR_S_TO_M),
+    # <0:wait> <1:underflow> <2:destination unreachable> <3:sequence error>
+    ("o_status", 4, DIR_S_TO_M),
 
     # pessimistic estimate of the number of outputs events that can be
     # written without waiting.
@@ -70,7 +70,7 @@ class KernelInitiator(Module, AutoCSR):
         # zero-extension of output event data by the gateware. When staging an
         # output event, always write target before o_data.
         self.o_data = CSRStorage(512, write_from_dev=True)
-        self.o_status = CSRStatus(3)
+        self.o_status = CSRStatus(4)
 
         self.i_timeout = CSRStorage(64)
         self.i_data = CSRStatus(32)

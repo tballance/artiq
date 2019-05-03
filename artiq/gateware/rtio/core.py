@@ -118,3 +118,13 @@ class Core(Module, AutoCSR):
             o_busy_sync.i.eq(outputs.busy),
             o_busy_sync.data_i.eq(outputs.busy_channel)
         ]
+
+        o_status_sequence_error = Signal()
+        self.comb += self.cri.o_status[3].eq(o_status_sequence_error)
+        self.sync += [
+            If(cmd_reset,
+                o_status_sequence_error.eq(0)
+            ).Elif(o_sequence_error,
+                o_status_sequence_error.eq(1)
+            )
+        ]

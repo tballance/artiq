@@ -32,7 +32,9 @@ class LaneDistributor(Module):
 
         o_status_wait = Signal()
         o_status_underflow = Signal()
-        self.comb += self.cri.o_status.eq(Cat(o_status_wait, o_status_underflow))
+        self.comb += self.cri.o_status[0:2].eq(Cat(
+            o_status_wait,
+            o_status_underflow))
 
         # The core keeps writing events into the current lane as long as timestamps
         # (after compensation) are strictly increasing, otherwise it switches to
@@ -166,9 +168,11 @@ class LaneDistributor(Module):
             If(do_underflow,
                 o_status_underflow.eq(1)
             ),
+
             self.sequence_error.eq(do_sequence_error),
             self.sequence_error_channel.eq(self.cri.chan_sel[:16])
         ]
+           
 
         # current lane has been full, spread events by switching to the next.
         if enable_spread:

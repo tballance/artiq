@@ -97,6 +97,12 @@ class RTIODestinationUnreachable(Exception):
     """
     artiq_builtin = True
 
+class RTIOSequenceError(Exception):
+    """Raised when a RTIO operation is executed after the 'sequence error' 
+    condition has been previously triggered.
+    """
+    artiq_builtin = True
+
 
 class DMAError(Exception):
     """Raised when performing an invalid DMA operation."""
